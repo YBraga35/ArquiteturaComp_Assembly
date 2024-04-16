@@ -1,0 +1,23 @@
+; Cria uma tabelo de multiplos de 2 na memoria, comecando com 2 e eindo ate 20, em cada
+; palavra sucessiva de mempria comecando no encdereco inicial do segmento de dado. A
+; variavel MUL2TAB definida na primeira pagina da memoria de dados ira guardar
+; os valores multiplos de 2, 0, 2, 4, ..., 18, 20
+; a tavela MUL2TAB estara na pagina 0 da memoria de dados
+MUL2TAB_PAGE 	EQU 	0
+; Agora define offset da tabela MUL2TAB
+MUL2TAB 	EQU	0
+	; Programa principal
+	; DX ira apontar para a tabela MUL2TAB
+	movh	dx, MUL2TAB_PAGE ; inciializa DX com o nro de pagina da tabela MUL2TAB
+	movl	dx, MUL2TAB	; inicializa DX com o offset da tabela MUL2TAB
+	movi	cx, 20		; cx e' o contador de posicoes a serem preenchidas
+	movi	ax, 0		; AX e' o valor (mutiplo de 2) a ser armazenado
+laco:
+	stor	[dx], ax	;armazena o mult de 2 na posicao atual da tabela
+	subi	cx, 1		;decrementa o contador
+	brz	fimlaco		; se chegou a zero, para de preencher a tabela
+	addi	ax, 2		; incrementa o multiplo de 2
+	addi	dx, 1		;incrementa o apontador para a tabela
+	bra	laco		; volta ao laco de preenchimento da tabela
+fimlaco:
+	halt			; ja preencheu toda a tabela

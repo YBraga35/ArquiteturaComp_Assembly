@@ -1,0 +1,13 @@
+; Programa de teste de operacoes aritmeticas e logicas
+ movi ax, -10
+ movi bx, 5
+ movi cx, 3
+ mul ax, bx	; ax <- -10 * 5 = -50
+ add bx, cx	; bx <- 5+3 = 8
+ sub cx, bx	; cx <- 3 - 8 = -5
+ movl dx, 0xf0	; bits menos significativos de dx <- 11110000
+ movh dx, 0xEE	; bits menos significativos de dx <- 11101110
+ ori dx, 0x03	; liga dois bits menos significativos de dx
+		; valor binario de dx <- 111011101111011
+
+ halt

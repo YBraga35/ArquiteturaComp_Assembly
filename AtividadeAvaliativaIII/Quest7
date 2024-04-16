@@ -1,0 +1,39 @@
+; O programa deve ler um valor do usuario e testar se ele esta na faixa de 20 a 90
+; Se estiver ele imprime 1, senao imprime 0
+INTPORT		EQU	0
+
+; Variaveis:
+; BX = limite max
+; CX = comeco (20+1)
+; AX = N
+
+	movi	bx, 90  ; limite do array
+	movi	cx, 20  ; inicializa contador
+	; Le o valor inteiro N do usuario e salva em AX
+	inp	ax, INTPORT
+	mov	dx, ax	; Armazena A em D
+	sub	dx, cx	; Testa se o valor e' menor que 20
+	brn	fimfora	; Termina o programa com -1
+	brz	fimfora
+	mov	dx, ax	; Testa se N >= 90
+	sub	dx, bx
+	brp	fimfora	; Apenas vai para o fim se operacao anterior for 
+	brz	fimfora	; 0 ou negativa
+
+loop:   
+	addi	cx, 1	; contador <- contador + 1
+	mov 	dx, ax	; usa dx para subtrair o contador de N
+	sub 	dx, cx	; se a subtracao e' zero (ou seja
+	brz  	fimprog	; N contido acima de 21), entao fim programa
+	bra  	loop	; subtracao nao e' zero (logo N>=contador),
+			; volta ao laco,
+
+fimprog:
+	movi 	dx, 1
+	outp 	dx, INTPORT
+	halt
+
+fimfora:
+	movi	dx, 0
+	outp	dx, INTPORT
+	halt

@@ -1,0 +1,38 @@
+; Divisao de inteiros por inteiros positivos. O programa le dois inteiros e divide o priemiro
+; pelo segundo se o segundo, o divisor, for positivo e maior que zero. Se o divisor, for
+; negativo ou zero, o programa imprime -1 indicando erro. Se tudo estiver ok com os dados de
+; entrada o programa primeiro imprime o quociente e entao imprime o resto da divisao.
+; Define a porta E/S de inteiros
+INTPORT		EQU	0
+	; Programa principal
+	inp	ax, INTPORT	; le valor a ser dividido (dividendo)
+	inp	bx, INTPORT	; le valor do divisor
+	or	bx, bx		; salva o valor registrado dentro da ALU
+	brn	erro		; se o divisor for zero ou negativo e' erro
+	brz	erro
+	movi	cx, 0
+	or	ax, ax		; testa se o dividendo e' negativo, se for executa
+	brn	laco_negdiv	; algoritmo de divisao de numero negativo
+laco_posdiv:
+	sub	ax, bx		; faz a divisao de valor positivo por subtracoes sucessivas
+	brn	fim_posdiv	; do divisor (que e' positivo), contando quantas subtracoes podem
+	addi	cx, 1		; ser feitas antes de chegar a zero ou negativo
+	bra	laco_posdiv
+fim_posdiv:
+	outp 	cx, INTPORT	; imprime o quociente
+	add 	ax, bx		; ajusta e imprime o valor do resto
+	outp	ax, INTPORT
+	halt
+laco_negdiv:
+	add	ax,bx		; faz a divisao do valor negativo por adicoes sucessivas do
+	brp	fim_negdiv	; divisor (que e' positivo), contando quantas subtracoes podem
+	subi	cx, 1		; ser feitas antes de chegar a zero ou positivo
+	bra	laco_negdiv	; a contagem deve ser feitas em valores negativo
+fim_negdiv:
+	outp	cx, INTPORT	; imprime o quociente
+	sub	ax, bx		; ajusta o valor do resto
+	outp	ax, INTPORT	; imprime o valor do resto
+erro:
+	movi	ax, -1
+	outp	ax, INTPORT
+	halt

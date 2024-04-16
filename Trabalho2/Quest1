@@ -1,0 +1,20 @@
+; Calculo de fatorial
+
+INTPORT EQU 0
+	; Programa Principal
+	inp ax, INTPORT		; Le N e armazena em ax
+	or ax,ax
+	brn error		; Se negativo, salta para error
+	movi bx, 1		; Move o num 1 para dentro de bx
+laco:
+	brz fimlaco		; Se zero, salta para fimlaco
+	mul bx,ax		; Multiplica ax por 1 e armazena em bx
+	subi ax, 1 		; Subtrai 1 de ax
+	bra laco		; Salta para o inicio do laco
+fimlaco:
+	outp bx, INTPORT	; Escreve o resultado
+	halt
+error:
+	movi ax, -1		; Houve erro, escreve -1
+	outp ax, INTPORT	
+	halt

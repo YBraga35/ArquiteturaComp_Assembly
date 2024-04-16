@@ -1,0 +1,22 @@
+; Programa deve realizar a operacao 3x3 +13x2 -x - 11 e imprimir seu resultado
+
+INTPORT		EQU	0
+	inp	ax, INTPORT
+	mov	bx, ax
+	mul	bx, bx
+	mul	bx, ax
+	muli	bx, 3	; 3x3
+	mov 	cx, ax
+	mul	cx, cx
+	muli	cx, 13	; 13x2
+	movi	dx, 0
+	sub	dx, ax	; -x
+
+	; comeca a montar o Y, agora tendo todos os graus de X prontos
+	mov	ax, bx	; Y = 3x3
+	add	ax, cx	; Y = 3x3 + 13x2
+	add	ax, dx	; Y = 3x3 + 13x2 + (-X)
+	subi	ax, 11	; Y = 3x3 + 13x2 + (-X) - 11
+
+	outp	ax, INTPORT
+	halt	

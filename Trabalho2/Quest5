@@ -1,0 +1,35 @@
+; Esse programa calcula a potencia de um numero por outro, ambos com imput por
+; usuario, no formato Xn atraves de multiplicacoes sucessivas
+
+INTPORT		EQU	0
+
+	inp	ax, INTPORT	; Armazena X em A
+	mov	bx, ax		; B=A=X
+	inp	cx, INTPORT	; Armazena N em C
+
+	mov	cx, cx	; Armazena N em D para testar se e' positivo
+	addi	cx, 0	; teste se o valor e' negativo
+	brz	apenas_um	; vai para o fim do programa
+	brn	erro	; Indica erro na potencia
+	subi	cx, 1
+
+pot:
+	mul	bx, ax	
+	subi	cx, 1
+	brz	fimpot	; Final da potencia pq N = 0 agora
+	bra	pot	; retorna para continuar a potenciacao
+
+apenas_um:
+	movi	dx, 1
+	outp	dx, INTPORT	; x^0 = 1
+	halt
+
+erro:
+	movi	dx, 0
+	outp	dx, INTPORT	; n invalido, entao resultado =0
+	halt		; algo impossivel para uma potenciacao, exceto se X = 0
+	
+
+fimpot:
+	outp	bx, INTPORT
+	halt

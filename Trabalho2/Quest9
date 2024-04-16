@@ -1,0 +1,22 @@
+; Programa imprime na tela as primeiras N potencias de 2
+	
+INTPORT	  EQU 0
+
+	inp ax, INTPORT
+	mov ax, ax 
+	movi cx, 1
+	outp cx, INTPORT
+
+calculapot:  
+	addi dx, 1
+	mov bx, ax
+	muli cx, 2
+	outp cx, INTPORT    
+	sub bx, dx
+	subi bx, 1
+	brp calculapot
+	brz encerra
+
+encerra:	
+	halt
+

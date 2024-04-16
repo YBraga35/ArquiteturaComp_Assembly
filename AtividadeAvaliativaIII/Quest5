@@ -1,0 +1,25 @@
+; Programa que realiza o somatorio dos numeros de 1 ate N e printa na tela
+
+INTPORT		EQU	0
+	; Programa principal
+	inp	ax, INTPORT	; Recebe o valor de N pela entrada padrao de dados
+	or	ax, ax		; registra na ALU o valor de N
+	brn	erro		; se N for negativo ou zero
+	brz	erro
+	movi	bx, 1		; registra o valor 0 como inicio do somatorio
+	movi	cx, 1		; inicializa o contador
+laco_somatorio:
+	addi cx, 1  ; contador <- contador + 1
+	add  bx, cx ; somatorio <- somatorio + contador
+	mov  dx, ax ; usa dx para subtrair o contador de N
+	sub  dx, cx ; se a subtracao e' zero (ou seja  
+	brz  fim_laco ; N=contador), entao fim laco
+	bra  laco_somatorio  
+fim_laco:
+	outp	bx, INTPORT
+	halt
+
+erro:
+	movi	ax, -1
+	outp	ax, INTPORT
+	halt

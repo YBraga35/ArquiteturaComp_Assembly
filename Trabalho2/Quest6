@@ -1,0 +1,51 @@
+;Programa testa se o numero informado e' um numero perfeito
+
+INTPORT EQU 0
+
+	inp ax, INTPORT 	; Importa o numero a ser testado
+	mov ax, ax
+	brz erro		; Se o numero digitado for 0, resulta em erro
+	brn erro		; Se o numero for negativo, resulta em erro
+	mov bx, ax		; Faz uma copia de ax em bx
+	mov cx, ax		; Faz uma copia de ax no contador cx
+	bra menosum		; Salta para menosum
+
+erro:
+	movi ax, -1		; ax recebe -1 (resultado para erro)
+	outp ax, INTPORT	; Exibe mensagem de erro
+	halt			; Encerra
+
+menosum:
+	mov bx, ax		; Recoloca o valor de ax em bx
+	subi cx, 1		; Subtrai 1 do contador
+	bra loopdivi		; Salta para a divisao
+
+loopdivi:			; Loop para saber se a divisao por esse numero e' exata ou tem resto
+	sub bx, cx		; Subtrai cx de bx
+	brn naodivisor		; Resultado negativo mostra que o numero nao e' um divisor
+	brz divisores		; Zero mostra que nao sobra resto, logo, e' um divisor
+	mov cx, cx
+	brz fimdivi		; cx em zero salta para fimdivi
+	bra loopdivi		;Se positivo, volta ao inicio do loop
+
+naodivisor:
+	bra menosum		; Salta para testar o proximo numero
+
+divisores:
+	add dx, cx		; Adiciona o divisor a dx
+	bra menosum		; Salta para testar o proximo numero
+
+fimdivi:
+	sub ax, dx		; Subtrai a soma dos divisores de ax
+	brz perfeito 		; Se 0, salta para perfeito
+	bra naoperfeito		; Senao salta para naoperfeito
+
+perfeito:
+	movi ax, 1		; ax recebe 1 (resultado para numero perfeito)
+	outp ax, INTPORT	; Exibe na tela
+	halt			; Encerra
+
+naoperfeito:
+	movi ax, 0		; ax recebe 0 (resultado para numero que nao e' perfeito)
+	outp ax, INTPORT	; Exibe na tela
+	halt			; Encerra

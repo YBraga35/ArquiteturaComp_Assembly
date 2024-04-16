@@ -1,0 +1,50 @@
+; Programa para calcular a media dos numeros digitados
+; Para executar o calculo, o usuario devera informar um numero negativo
+
+INTPORT	EQU 0
+
+	movi bx, 0		; Variavel somaadora
+	movi cx, 0		; Variavel de quantidade
+	inp ax, INTPORT		; Recebe um numero informado pelo usuario
+	mov ax, ax
+	brn nenhum		; Salta para o bloco nenhum
+	brz somatorio		; Salta para somatorio
+	bra somatorio		; Salta para somatorio
+
+somatorio:
+	add bx, ax		; Adiciona o valor digitado na variavel somadora
+	addi cx, 1		; Adiciona +1 na variavel de quantidade
+	inp ax, INTPORT		; Recebe um numero informado pelo usuario
+	mov ax, ax
+	brn controle		; Se negativo, salta para o bloco que calcula media
+	brz somatorio		; Se 0, salta para somatorio
+	bra somatorio		; Se positivo, salta para somatorio
+
+nenhum:
+	outp cx, INTPORT	; Imprime 0, nenhum numero informado
+	halt
+
+controle: 
+	mov dx, cx		; Faz uma copia de cx em dx
+	movi ax, 0		; ax recebe 0
+	bra media		; Salta para media 
+
+media:
+	sub bx, cx		; Subtrai cx de bx
+	subi dx, 1		; Subtrai 1 de dx
+	addi ax, 1		; Adiciona 1 em ax
+	mov bx, bx
+	brn divresto		; Se negativo salta para divresto
+	brz divint		; Se 0, salta para divint
+	bra media		; Se positivo salta para media
+
+divresto:
+	subi ax, 1		; Subtrai 1 de ax
+	outp cx, INTPORT	; Imprime a quantidade de numeros informados
+	outp ax, INTPORT	; Imprime a divisao inteira da media
+	halt
+
+divint:
+	outp cx, INTPORT	; Imprime a quantidade de numeros informados
+	outp ax, INTPORT	; Imprime a media
+	halt

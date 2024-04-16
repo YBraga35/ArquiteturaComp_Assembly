@@ -1,0 +1,60 @@
+; Essa questao e' feita para, a partir de uma idade N dizer quais cargos a pessoa
+; pode se candidatar segundo a constituicao brasileira
+
+INTPORT		EQU	0
+
+
+; Cat 0-	idade < 18 anos
+; Cat 1-	idade > 18 e idade < 21
+; Cat 2-	idade >= 21 e idade < 30
+; Cat 3-	idade >= 30 e idade < 35
+; Cat 4-	idade >= 35
+
+
+	inp	ax, INTPORT	; ax = N
+	mov	bx, ax		; bx = N
+	subi	bx, 18		; teste se e' categoria 0
+	brz	cat1		; habilitado a ser Vereador
+	brn	cat0		; nao esta' habilitado a nenhuma categoria
+	
+	mov	bx, ax	; bx = N
+	subi	bx, 21	; teste se e' categoria 1
+	brn	cat1	; habilitado a categoria 1
+	brz	cat2	;habilitado para categoria 2
+
+	mov	bx, ax	; bx = N
+	subi	bx, 30	; teste se e' categoria 1
+	brn	cat2	; habilitado a categoria 1
+	brz	cat3	;habilitado para categoria 2
+
+	mov	bx, ax	; bx = N
+	subi	bx, 35	; teste se e' categoria 1
+	brn	cat3	; habilitado a categoria 1
+	brz	cat4	;habilitado para categoria 2
+
+	bra	cat4	; habilitado para qualquer cargo, se chegou ate' aqui
+
+cat0:
+	movi 	dx, 0
+	outp	dx, INTPORT
+	halt
+
+cat1:
+	movi 	dx, 1
+	outp	dx, INTPORT
+	halt
+
+cat2:
+	movi 	dx, 2
+	outp	dx, INTPORT
+	halt
+
+cat3:
+	movi 	dx, 3
+	outp	dx, INTPORT
+	halt
+
+cat4:
+	movi 	dx, 4
+	outp	dx, INTPORT
+	halt

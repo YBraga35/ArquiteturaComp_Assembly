@@ -1,0 +1,16 @@
+; Programa que calcula um polinomio com a variavel X lida do usuario
+; Define a porta E/S de inteiros
+INTPORT EQU 0
+	; Programa Principal
+	; Le X, um numero inteiro em AX
+	inp ax, INTPORT
+	; Calcula o resultado do polinomio
+	mov	bx, ax ; x=y = 8=8
+	mul	ax,ax ; x*x = 8*8 = 64
+	muli	ax, 5 ; x*x*5 = 8*8*5 = 64*5 = 320
+	muli	bx, 2 ; y*2 = 8*2 = 16
+	add	ax, bx ; (x*x*5)+(y*2) = 336
+	addi	ax, 3 ; ((x*x*5)+(y*2))+3 = 339
+	; Imprime o resultado do calculo
+	outp ax, INTPORT
+	halt

@@ -1,0 +1,71 @@
+; Esse programa deve ler o maior de tres valores lidos
+; do usuario,  seguindo uma logica de subtracao para teste
+
+INTPORT		EQU	0
+
+	inp 	ax, INTPORT	; Importa valor 1 para ax
+	mov 	ax, ax		; registra pela ALU ax
+	inp 	bx, INTPORT	; Importa valor 2 para bx
+	mov 	bx, bx		; registra pela ALU bx
+	inp 	cx, INTPORT	; Importa valor 3 para cx
+	mov 	cx, cx		; registra pela ALU cx
+
+	mov	dx, ax		; passa-se ax para dx para fazer
+	sub 	dx, bx		; teste se bx>ax
+	brp	teste_ac	; se A>B, testa se A>C
+	bra	teste_bc	; nesse, B>A, e testa se B>C
+
+teste_ac:
+	mov	dx, ax		; aqui descobre-se se A>C
+	sub	dx, cx		; teste se A>C 
+	brp	a_maior		; se A>C e A>B, A e' o maior
+	mov	dx, cx		; senao C e' o maior
+	bra	c_maior		; precisamos descobrir ainda qual o menor
+
+a_maior:
+	outp	ax, INTPORT	; A e' o maior
+	mov 	dx, bx		; aqui devemos descobrir se B > C
+	sub	dx, cx		; se C>B o resultado e' negativo
+	brp	c_menor_a		; leva o programa ate' o C menor
+	outp	bx, INTPORT	; Imprime o valor de bx e encerra o programa
+	halt
+
+c_menor_a:
+	outp	cx, INTPORT	; imprime o valor de C
+	halt
+
+teste_bc:			; Sabemos que B>A, testamos se B>C
+	mov	dx, bx		; movemos B para D
+	sub	dx, cx		; se C>B o resultado e' negativo
+	brp	b_maior		; senao B e' maior
+	bra	teste_ac	; precisamos descobrir qual e' o menor
+
+b_maior: 			
+	outp	bx, INTPORT	; B e' o maior
+	mov	dx, ax		; aqui devemos decobrir se A > C
+	sub	dx, cx		; se C>A o resultado e' negativo
+	brp	c_menor_a	; leva o programa ate o C menor
+	outp	ax, INTPORT	; Imprime o valor de A e encerra o programa
+	halt
+	
+c_maior:
+	outp	cx, INTPORT	; imprime o valor de C
+	mov	dx, ax		; devemos descobrir qual o menor
+	sub 	dx, bx		; se B>A o resultado e' negativo
+	brp	b_menor_a 	; leva o programa ate B menor
+	outp	ax, INTPORT	; Imprime o valor de A e encerra
+	halt
+
+b_menor_a:
+	outp	bx, INTPORT	; imprime o valor de B
+	halt
+
+a_menor:
+	outp 	bx, INTPORT	; Output de B por ser o maior
+	mov 	dx, cx		; armazenamos C em D
+	sub 	dx, ax		; se A>C resultado e' negativo	
+	halt
+
+
+	
+	

@@ -1,0 +1,85 @@
+; Essa questao visa analizar se um numero inteiro positivo e' divisivel por:
+; 10, 5, 2 ou 1. Devem ser testados todos, imprimindo os divisores que o resto e' zero
+; A divisao nao ocorre com numeros negativos
+
+INTPORT		EQU	0
+
+
+	inp	ax, INTPORT	; Guarda N em AX
+	addi	ax, 0		; teste se A e' negativo
+	brn	erro
+	brz	erro
+
+
+loop10:   
+	mov  	dx, ax 	; usa dx para subtrair o contador de N
+	movi	bx, 10	; inicializa o divisor como 10
+    	addi	cx, 1	; Incrementa o contador
+	mul	bx, cx	; Poe o divisor adequado de acordo com qual loop esta'
+    	sub  	dx, bx 	; 
+    	brz  	div10 	; e' um divisor se o resto e' zero
+	brn	loop5i
+    	bra  	loop10
+
+loop5i:
+	movi	cx, 0
+
+loop5:
+	mov  	dx, ax 	; usa dx para subtrair o contador de N
+	movi	bx, 5	; inicializa o divisor como 5
+    	addi	cx, 1	; Incrementa o contador
+	mul	bx, cx	; Poe o divisor adequado de acordo com qual loop esta'
+    	sub  	dx, bx 	; 
+    	brz  	div5 	; e' um divisor se o resto e' zero
+	brn	loop2i
+    	bra  	loop5
+
+loop2i:
+	movi	cx, 0
+
+loop2:
+	mov  	dx, ax 	; usa dx para subtrair o contador de N
+	movi	bx, 2	; inicializa o divisor como 2
+    	addi	cx, 1	; Incrementa o contador
+	mul	bx, cx	; Poe o divisor adequado de acordo com qual loop esta'
+    	sub  	dx, bx 	; 
+    	brz  	div2 	; e' um divisor se o resto e' zero
+	brn	div1
+    	bra  	loop2
+
+
+
+div10:
+	movi	dx, 10
+	outp	dx, INTPORT
+	movi	dx, 5
+	outp	dx, INTPORT
+	movi	dx, 2
+	outp	dx, INTPORT
+	movi	dx, 1
+	outp	dx, INTPORT
+	halt
+
+div5:
+	movi	dx, 5
+	outp	dx, INTPORT
+	movi	dx, 1
+	outp	dx, INTPORT
+	halt
+
+div2:
+	movi	dx, 2
+	outp	dx, INTPORT
+	movi	dx, 1
+	outp	dx, INTPORT
+	halt
+
+div1:
+	movi	dx, 1
+	outp	dx, INTPORT
+	halt
+
+erro:
+	movi	dx, 0
+	outp	dx, INTPORT
+	halt

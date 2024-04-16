@@ -1,0 +1,46 @@
+; Programa testa qual a nota de aluno (A, B, C, D ou F) de acordo com a
+;pontuacao alcancada.
+
+INTPORT    EQU  0
+CHARPORT  EQU  1
+        ;Programa principal
+   	inp ax, INTPORT		; Recebe a nota em ax
+   	mov bx, ax		; Faz uma copia em bx
+   	or ax, ax
+	brn erro		; Se 0, salta para erro
+   	subi ax,100		; Subtrai 100 da nota
+	brp erro		; Se resultado > 100, restorna erro
+	mov ax,bx		; Devolve o valor original para ax
+	subi ax,90		; Testa se a nota esta entre 100 e 90
+	brn teste2		; Se negativo, salta para o teste2
+	movi ax, 'A'		; Se positivo, ax recebe 'A'
+	bra fimprog		; Salta para o fim do programa
+teste2:
+	mov ax,bx		; Devolve o valor original para ax
+	subi ax,80		; Testa se a nota esta entre 80 e 90
+	brn teste3		; Se negativo, salta para teste3
+  	movi ax, 'B'		; Se positivo, ax recebe 'B'
+	bra fimprog		; Salta para o fim do programa
+teste3:
+      	mov ax,bx		; Devolve o valor original para ax
+	subi ax,70		; Testa se a nota esta entre 70 e 80
+	brn teste4		; Se negativo, salta para teste4
+	movi ax, 'C'		; Se positivo, ax recebe 'C'
+        bra fimprog		; Salta para o fim do programa
+teste4:
+	mov ax,bx		; Devolve o valor original para ax
+	subi ax,60		; Testa se a nota esta entre 60 e 70
+        brn default		; Se negativo, salta para default
+	movi ax, 'D'		; Se positivo, ax recebe 'C'
+	bra fimprog		; Salta para o fim do programa
+default:
+	movi ax, 'F'		; ax recebe 'F'
+fimprog:
+	outp ax, CHARPORT	; Exibe natela  a letra correspondente a nota
+	halt
+erro:
+	movi ax, -1		; ax recebe -1 
+	outp ax, INTPORT	; Exibe -1 na tela
+	halt
+	
+	

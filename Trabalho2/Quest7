@@ -1,0 +1,72 @@
+; O programa deseja calcular a area de diversas figuras geometricas, especificamente
+; 1 - quadrado		=	L*L
+; 2 - retangulo		=	B*A
+; 3 - triangulo		=	(B*A)/2
+
+INTPORT		EQU	0
+
+	inp	ax, INTPORT	; Seleciona a opcao dentre as areas a serem calculadas
+	subi	ax, 1
+	brz	qua
+	addi	ax, 1
+	subi	ax, 2
+	brz	ret
+	addi	ax, 2
+	subi	ax, 3
+	brz	tri
+	bra	erro
+
+qua:
+	inp	ax, INTPORT	; recebe o valor dos lados do quadrado
+	mul	ax, ax
+	brn	erro
+	brz	erro
+	outp	ax, INTPORT
+	halt
+
+ret:
+	inp	ax, INTPORT	; recebe o valor do lado do retangulo
+	addi	ax, 0
+	brn	erro
+	brz	erro
+	inp	bx, INTPORT	; recebe o valor da base do retangulo
+	addi	bx, 0
+	brn	erro
+	brz 	erro
+	mul	ax, bx
+	outp	ax, INTPORT
+	halt
+
+tri:
+	inp	ax, INTPORT	; recebe o valor do lado do triangulo
+	addi	ax, 0
+	brn	erro
+	brz	erro
+	inp	bx, INTPORT	; recebe o valor da base do triangulo
+	addi	bx, 0
+	brn	erro
+	brz	erro
+	mul	ax, bx
+	movi	cx, 0
+	
+div:
+	addi	cx, 1
+	subi	ax, 2
+	brz	fimdivis
+	brn	fimdivisresto
+	bra	div
+
+fimdivis:
+	outp	cx, INTPORT
+	halt
+
+fimdivisresto:
+	outp	cx, INTPORT
+	movi	ax, 1
+	outp	ax, INTPORT	
+	halt
+
+erro:
+	movi	dx, -1
+	outp	dx, INTPORT
+	halt

@@ -1,0 +1,48 @@
+; Esse programa visa pedir ao usua'rio um nu'mero N de testes para x nu'meros
+; que deve ter como output o maior deles
+
+
+INTPORT		EQU	0
+
+	inp	ax, INTPORT	; Digitado o valor N de numeros a serem lidos
+	addi	ax, 0
+	brn	fim
+	brz	fim
+	inp	bx, INTPORT
+	mov	dx, bx
+	
+comeco:
+	subi	ax, 1
+	brz	fim
+	inp	cx, INTPORT
+	sub	cx, bx
+	brn	bmaior
+	brp	cmaior
+	bra	comeco
+
+cmaior:
+	add	cx, bx
+	mov	bx, cx
+	bra	comeco
+
+bmaior:
+	add	cx, bx
+	sub	cx, dx
+	brn	cmenor
+	brp	dmenor
+	bra	comeco	
+
+cmenor:
+	add	cx, dx
+	mov	dx, cx
+	bra	comeco
+	
+dmenor:
+	mov	dx, dx
+	bra 	comeco
+ 
+
+fim:
+	outp	dx, INTPORT
+	outp	bx, INTPORT
+	halt

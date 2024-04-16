@@ -1,0 +1,92 @@
+; Esse prograna visa simular uma calculadora, tendo as operacoes de:
+; 1 - soma
+; 2 - sutracao
+; 3 - multiplicacao 
+; 4 - divisao
+
+; Caso o usuario digite uma operacao invalida o programa deve informar o erro com -1
+
+INTPORT		EQU	0
+
+
+	inp	ax, INTPORT	; Recebe aqui a operacao desejada indo de 1 a 4
+	mov	dx, ax		; Armazena a operacao desejada para poder malipular o valor
+	subi 	dx, 1		; testa se o calor dado e' negativo ou 0
+	brn	erro	; Leva ate' o erro, imprimindo -1
+	
+	mov	dx, ax	; rearmazena a operacao em D
+	subi	dx, 1	; teste se o valor e' 1
+	brz	soma	; leva ate a operacao de soma
+
+	mov	dx, ax	; rearmazena a operacao em D
+	subi	dx, 2	; teste se o valor e' 2
+	brz	subt	; leva ate a operacao de soma
+	
+	mov	dx, ax	; rearmazena a operacao em D
+	subi	dx, 3	; teste se o valor e' 3
+	brz	mult	; leva ate a operacao de soma
+
+	mov	dx, ax	; rearmazena a operacao em D
+	subi	dx, 4	; teste se o valor e' 4
+	brz	divis	; leva ate a operacao de soma
+
+	bra	erro	; requisita novamente a operacao desejada
+
+soma:
+	inp	ax, INTPORT	; Armazena o primeiro operando
+	inp	bx, INTPORT	; Armazena o segundo operando
+	add	ax, bx		; Realiza a operacao com os operandos informados
+	outp	ax, INTPORT	; Imprime o resultado para o usuario
+	halt
+
+subt:
+	inp	ax, INTPORT	; Armazena o primeiro operando
+	inp	bx, INTPORT	; Armazena o segundo operando
+	sub	ax, bx		; Realiza a operacaoo com os operandos informados
+	outp	ax, INTPORT	; Imprime o resultado para o usuario
+	halt
+
+mult:
+	inp	ax, INTPORT	; Armazena o primeiro operando
+	inp	bx, INTPORT	; Armazena o segundo operando
+	mul	ax, bx		; Realiza a operacao com os operandos informados
+	outp	ax, INTPORT	; Imprime o resultado para o usuario
+	halt
+
+divis:
+	inp	ax, INTPORT	; Armazena o primeiro operando
+	inp	bx, INTPORT	; Armazena o segundo operando
+	addi	bx, 0		; testa se o divisor e' zero ou negativo
+	brz	erro
+	brn	erro
+	
+divisao:
+	addi	cx, 1		; soma o quociente
+	sub	ax, bx		; Realiza a operacaoo com os operandos informados
+	brz	fimdivis
+	brn	fimdivis
+	bra	divisao
+
+fimdivis:
+	outp	cx, INTPORT	; Imprime o resultado para o usuario
+	halt
+
+erro:
+	movi	ax, -1	; Algo de errado nao esta' certo
+	outp	ax, INTPORT	; imprime o codigo de erro padrao
+	halt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
